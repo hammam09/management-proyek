@@ -1,0 +1,6 @@
+{
+  "name": "Manajemen Proyek",
+  "description": "Aplikasi Manajemen Proyek untuk mengelola daftar proyek, klien, status, dan tenggat waktu secara real-time.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

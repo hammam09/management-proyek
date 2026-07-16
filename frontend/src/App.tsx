@@ -38,8 +38,8 @@ interface ProjectFormInput {
 // Uses window.location.origin to match the current deployment/dev server on port 3000
 const API_URL = typeof window !== "undefined"
   ? (window.location.hostname === "localhost"
-      ? "http://localhost:3000/projects"
-      : `${window.location.origin}/projects`)
+    ? "http://localhost:3000/projects"
+    : `${window.location.origin}/projects`)
   : "http://localhost:3000/projects";
 
 export default function App() {
@@ -223,7 +223,7 @@ export default function App() {
 
       setProjects((prev) => prev.filter((p) => p.id !== id));
       triggerNotification(`Proyek "${nama}" berhasil dihapus.`);
-      
+
       // If we are currently editing this project, cancel edit mode
       if (editingId === id) {
         resetForm();
@@ -286,7 +286,7 @@ export default function App() {
       tanggalSelesai: project.tanggalSelesai,
     });
     setFormErrors({});
-    
+
     // Smooth scroll to form on mobile view
     const formElement = document.getElementById("project-form-container");
     if (formElement) {
@@ -327,7 +327,7 @@ export default function App() {
     const matchesSearch =
       project.nama.toLowerCase().includes(searchQuery.toLowerCase()) ||
       project.klien.toLowerCase().includes(searchQuery.toLowerCase());
-    
+
     const matchesFilter =
       statusFilter === "semua" ||
       project.status.toLowerCase() === statusFilter.toLowerCase();
@@ -353,17 +353,17 @@ export default function App() {
               </p>
             </div>
           </div>
-          
+
           <div className="flex items-center gap-2 text-xs font-mono bg-slate-100 px-3 py-1.5 rounded-lg text-slate-600 border border-slate-200">
             <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-pulse"></span>
-            PORT: 3000 (Connected)
+            Ready
           </div>
         </div>
       </header>
 
       {/* Main Container */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        
+
         {/* Toast / Success Notification Alert */}
         {successMessage && (
           <div className="mb-6 p-4 bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-xl flex items-start gap-3 shadow-lg shadow-emerald-50 max-w-2xl mx-auto animate-fade-in">
@@ -371,8 +371,8 @@ export default function App() {
             <div className="flex-1">
               <p className="text-sm font-semibold">{successMessage}</p>
             </div>
-            <button 
-              onClick={() => setSuccessMessage(null)} 
+            <button
+              onClick={() => setSuccessMessage(null)}
               className="text-emerald-500 hover:text-emerald-700 transition"
             >
               <X className="w-4 h-4" />
@@ -398,8 +398,8 @@ export default function App() {
                 <RefreshCw className="w-3.5 h-3.5" />
                 Hubungkan Ulang
               </button>
-              <button 
-                onClick={() => setError(null)} 
+              <button
+                onClick={() => setError(null)}
                 className="text-rose-500 hover:text-rose-700 p-1 rounded"
               >
                 <X className="w-4 h-4" />
@@ -410,11 +410,11 @@ export default function App() {
 
         {/* Responsive Two Column Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          
+
           {/* COLUMN 1: FORM (Left Column) - Occupies 4 out of 12 cols */}
-          <div 
+          <div
             id="project-form-container"
-            className="lg:col-span-5 bg-white border border-slate-200/90 rounded-2xl p-6 shadow-sm sticky top-24"
+            className="lg:col-span-5 bg-white border border-slate-200/90 rounded-2xl p-6 shadow-sm lg:sticky lg:top-24"
           >
             <div className="flex items-center justify-between border-b border-slate-100 pb-4 mb-5">
               <div className="flex items-center gap-2.5">
@@ -430,7 +430,7 @@ export default function App() {
                   </p>
                 </div>
               </div>
-              
+
               {isEditMode && (
                 <button
                   onClick={resetForm}
@@ -444,7 +444,7 @@ export default function App() {
 
             {/* Project Form */}
             <form onSubmit={handleSubmit} className="space-y-4">
-              
+
               {/* ID Field (Hidden/Disabled Indicator for Auto-Increment assurance) */}
               {isEditMode && (
                 <div>
@@ -471,11 +471,10 @@ export default function App() {
                   value={formInput.nama}
                   onChange={handleInputChange}
                   placeholder="Contoh: Website Kemakmuran Desa"
-                  className={`w-full px-3.5 py-2.5 bg-slate-50/50 hover:bg-slate-50 border rounded-xl text-sm transition focus:outline-none focus:ring-2 focus:bg-white ${
-                    formErrors.nama
+                  className={`w-full px-3.5 py-2.5 bg-slate-50/50 hover:bg-slate-50 border rounded-xl text-sm transition focus:outline-none focus:ring-2 focus:bg-white ${formErrors.nama
                       ? "border-rose-300 focus:ring-rose-200 focus:border-rose-500"
                       : "border-slate-200/80 focus:ring-indigo-100 focus:border-indigo-500"
-                  }`}
+                    }`}
                 />
                 {formErrors.nama && (
                   <p className="mt-1 text-xs text-rose-600 font-medium flex items-center gap-1">
@@ -496,11 +495,10 @@ export default function App() {
                     value={formInput.klien}
                     onChange={handleInputChange}
                     placeholder="Contoh: PT Harapan Jaya"
-                    className={`w-full pl-10 pr-3.5 py-2.5 bg-slate-50/50 hover:bg-slate-50 border rounded-xl text-sm transition focus:outline-none focus:ring-2 focus:bg-white ${
-                      formErrors.klien
+                    className={`w-full pl-10 pr-3.5 py-2.5 bg-slate-50/50 hover:bg-slate-50 border rounded-xl text-sm transition focus:outline-none focus:ring-2 focus:bg-white ${formErrors.klien
                         ? "border-rose-300 focus:ring-rose-200 focus:border-rose-500"
                         : "border-slate-200/80 focus:ring-indigo-100 focus:border-indigo-500"
-                    }`}
+                      }`}
                   />
                   <Building2 className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
                 </div>
@@ -544,11 +542,10 @@ export default function App() {
                     name="tanggalMulai"
                     value={formInput.tanggalMulai}
                     onChange={handleInputChange}
-                    className={`w-full px-3.5 py-2 bg-slate-50/50 hover:bg-slate-50 border rounded-xl text-sm transition focus:outline-none focus:ring-2 focus:bg-white ${
-                      formErrors.tanggalMulai
+                    className={`w-full px-3.5 py-2 bg-slate-50/50 hover:bg-slate-50 border rounded-xl text-sm transition focus:outline-none focus:ring-2 focus:bg-white ${formErrors.tanggalMulai
                         ? "border-rose-300 focus:ring-rose-200 focus:border-rose-500"
                         : "border-slate-200/80 focus:ring-indigo-100 focus:border-indigo-500"
-                    }`}
+                      }`}
                   />
                   {formErrors.tanggalMulai && (
                     <p className="mt-1 text-xs text-rose-600 font-medium">
@@ -566,11 +563,10 @@ export default function App() {
                     name="tanggalSelesai"
                     value={formInput.tanggalSelesai}
                     onChange={handleInputChange}
-                    className={`w-full px-3.5 py-2 bg-slate-50/50 hover:bg-slate-50 border rounded-xl text-sm transition focus:outline-none focus:ring-2 focus:bg-white ${
-                      formErrors.tanggalSelesai
+                    className={`w-full px-3.5 py-2 bg-slate-50/50 hover:bg-slate-50 border rounded-xl text-sm transition focus:outline-none focus:ring-2 focus:bg-white ${formErrors.tanggalSelesai
                         ? "border-rose-300 focus:ring-rose-200 focus:border-rose-500"
                         : "border-slate-200/80 focus:ring-indigo-100 focus:border-indigo-500"
-                    }`}
+                      }`}
                   />
                   {formErrors.tanggalSelesai && (
                     <p className="mt-1 text-xs text-rose-600 font-medium">
@@ -584,11 +580,10 @@ export default function App() {
               <button
                 type="submit"
                 disabled={actionLoadingId === "submit"}
-                className={`w-full mt-2 py-3 px-4 rounded-xl font-semibold text-sm text-white shadow-md flex items-center justify-center gap-2 transition-all ${
-                  isEditMode
+                className={`w-full mt-2 py-3 px-4 rounded-xl font-semibold text-sm text-white shadow-md flex items-center justify-center gap-2 transition-all ${isEditMode
                     ? "bg-amber-500 hover:bg-amber-600 shadow-amber-100 active:bg-amber-700"
                     : "bg-indigo-600 hover:bg-indigo-700 shadow-indigo-100 active:bg-indigo-800"
-                } disabled:opacity-75 disabled:cursor-wait`}
+                  } disabled:opacity-75 disabled:cursor-wait`}
               >
                 {actionLoadingId === "submit" ? (
                   <>
@@ -622,7 +617,7 @@ export default function App() {
 
           {/* COLUMN 2: LIST / CARDS (Right Column) - Occupies 7 out of 12 cols */}
           <div className="lg:col-span-7 space-y-6">
-            
+
             {/* Control Panel: Search & Filter Grid */}
             <div className="bg-white border border-slate-200/90 rounded-2xl p-5 shadow-sm space-y-4">
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
@@ -718,11 +713,10 @@ export default function App() {
                   return (
                     <div
                       key={project.id}
-                      className={`group bg-white border rounded-2xl p-5 shadow-sm transition-all duration-300 relative flex flex-col justify-between ${
-                        isCurrentEditing
+                      className={`group bg-white border rounded-2xl p-5 shadow-sm transition-all duration-300 relative flex flex-col justify-between ${isCurrentEditing
                           ? "border-amber-400 ring-2 ring-amber-100 shadow-md shadow-amber-50"
                           : "border-slate-200/80 hover:border-slate-300 hover:shadow-md"
-                      }`}
+                        }`}
                     >
                       {/* Top Header Row of the Card */}
                       <div className="flex items-start justify-between gap-3 mb-4">
@@ -772,7 +766,7 @@ export default function App() {
 
                       {/* Bottom Actions Row of the Card */}
                       <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-100">
-                        
+
                         {/* 1. Quick Ubah Status Button (PATCH) */}
                         <button
                           disabled={actionLoadingId === `patch-${project.id}`}
@@ -789,15 +783,14 @@ export default function App() {
 
                         {/* Edit & Delete Action Buttons Row */}
                         <div className="flex items-center gap-2">
-                          
+
                           {/* Edit Button (PUT load) */}
                           <button
                             onClick={() => handleEditClick(project)}
-                            className={`px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition active:scale-95 ${
-                              isCurrentEditing
+                            className={`px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition active:scale-95 ${isCurrentEditing
                                 ? "bg-amber-100 text-amber-800 border border-amber-200"
                                 : "bg-slate-50 hover:bg-amber-50 text-slate-700 hover:text-amber-700 border border-slate-200/80 hover:border-amber-200"
-                            }`}
+                              }`}
                           >
                             <Edit2 className="w-3 h-3" />
                             Edit

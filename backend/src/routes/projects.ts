@@ -24,7 +24,7 @@ let projects = [
 
 let nextId = 3
 
-router.get("/projects", (req: Request, res: Response) => {
+router.get("/", (req: Request, res: Response) => {
     const { klien } = req.query;
     if (klien) {
         const filteredProjects = projects.filter((pro) => pro.klien === klien);
@@ -35,7 +35,7 @@ router.get("/projects", (req: Request, res: Response) => {
     res.status(200).json(successResponse(projects, "Data projek berhasil diambil"));
 });
 
-router.get("/projects/:id", (req: Request, res: Response) => {
+router.get("/:id", (req: Request, res: Response) => {
     const { id } = req.params;
     const parsedId = parseInt(id as string, 10);
 
@@ -48,7 +48,7 @@ router.get("/projects/:id", (req: Request, res: Response) => {
     res.status(200).json(successResponse(proyekByID, `Data projek dengan id ${id} berhasil diambil`));
 });
 
-router.post("/projects", (req: Request, res: Response) => {
+router.post("/", (req: Request, res: Response) => {
     const { nama, klien, status, tanggalMulai, tanggalSelesai } = req.body;
 
     if(!nama || !klien || !status || !tanggalMulai || !tanggalSelesai){
@@ -79,7 +79,7 @@ router.post("/projects", (req: Request, res: Response) => {
     res.status(201).json(successResponse(newProject, "Data projek berhasil ditambahkan"));
 });
 
-router.put("/projects/:id", (req: Request, res: Response): void => {
+router.put("/:id", (req: Request, res: Response): void => {
     const { id } = req.params;
     const parsedId = parseInt(id as string, 10);
 
@@ -108,7 +108,7 @@ router.put("/projects/:id", (req: Request, res: Response): void => {
     res.status(200).json(successResponse(projects[projectIndex], `Data projek dengan id ${id} berhasil diperbarui`));
 });
 
-router.patch("/projects/:id", (req: Request, res: Response): void => {
+router.patch("/:id", (req: Request, res: Response): void => {
     const { id } = req.params;
     const parsedId = parseInt(id as string, 10);
 
@@ -128,7 +128,7 @@ router.patch("/projects/:id", (req: Request, res: Response): void => {
     res.status(200).json(successResponse(projects[projectIndex], `Data proyek dengan id ${id} berhasil diperbarui sebagian (PATCH)`));
 });
 
-router.delete("/projects/:id", (req: Request, res: Response) => {
+router.delete("/:id", (req: Request, res: Response) => {
     const { id } = req.params;
     const parsedId = parseInt(id as string, 10);
 

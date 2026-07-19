@@ -1,11 +1,11 @@
-import { Router, type Request, type Response,} from 'express';
-import { successResponse, errorResponse } from '../utils/response.js';
+import { Router, type Request, type Response, } from 'express';
+import { successResponse, errorResponse } from '../utils/response.ts';
 
 const router = Router();
 
 let tasks = [
-  { id: 1, judul: "Desain Database", pic: "Hammam", tenggal: "2026-07-25", status: "Progress"  },
-  { id: 2, judul: "Setup Environment Production", pic: "Amam", tenggat: "2026-07-30", status: "Selesai" }
+    { id: 1, judul: "Desain Database", pic: "Hammam", tenggal: "2026-07-25", status: "Progress" },
+    { id: 2, judul: "Setup Environment Production", pic: "Amam", tenggat: "2026-07-30", status: "Selesai" }
 ];
 
 let nextId = 3
@@ -26,7 +26,7 @@ router.get("/:id", (req: Request, res: Response) => {
     const parsedId = parseInt(id as string, 10);
 
     const tasksByID = tasks.find((task) => task.id === parsedId);
-    if (!tasksByID){
+    if (!tasksByID) {
         res.status(404).json(errorResponse("Data task tidak ditemukan"));
         return;
     }
@@ -37,14 +37,14 @@ router.get("/:id", (req: Request, res: Response) => {
 router.post("/", (req: Request, res: Response) => {
     const { judul, pic, tenggal, status } = req.body;
 
-    if(!judul || !pic || !tenggal || !status){
+    if (!judul || !pic || !tenggal || !status) {
         res.status(400).json(errorResponse("Data tidak lengkap"));
         return;
     }
 
 
     const isEmailExist = tasks.some((task) => task.judul === judul);
-    if (isEmailExist){
+    if (isEmailExist) {
         res.status(409).json({
             message: "Judul sudah terdaftar"
         });
@@ -102,11 +102,11 @@ router.patch("/:id", (req: Request, res: Response): void => {
         res.status(404).json(errorResponse(`Data task dengan id ${id} tidak ditemukan`));
         return;
     }
-    const { id: _, ...updates } = req.body; 
+    const { id: _, ...updates } = req.body;
     tasks[tasksIndex] = {
         ...tasks[tasksIndex],
-        ...updates,                
-        id: parsedId,              
+        ...updates,
+        id: parsedId,
     };
 
     res.status(200).json(successResponse(tasks[tasksIndex], `Data task dengan id ${id} berhasil diperbarui sebagian (PATCH)`));

@@ -2,7 +2,7 @@ import express, { type Express, type Request, type Response, type NextFunction }
 import cors from 'cors';
 import dotenv from 'dotenv';
 import projectsRoutes from '../src/routes/projects.ts';
-import taskRoutes from '../src/routes/task.ts';
+import taskRoutes from '../src/routes/tasks.ts';
 
 dotenv.config();
 
@@ -21,7 +21,7 @@ app.use((req, res, next) => {
 
 // --- HUBUNGKAN FILE ROUTER KE APP ---
 
-app.use("/projects", projectsRoutes); 
+app.use("/projects", projectsRoutes);
 app.use("/tasks", taskRoutes)
 
 app.get("/", (req: Request, res: Response) => {

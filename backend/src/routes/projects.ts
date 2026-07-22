@@ -1,4 +1,4 @@
-import { Router, type Request, type Response,} from 'express';
+import { Router, type Request, type Response, type NextFunction} from 'express';
 import { successResponse, errorResponse } from '../utils/response.js';
 
 const router = Router();
@@ -24,7 +24,16 @@ let projects = [
 
 let nextId = 3
 
-router.get("/", (req: Request, res: Response) => {
+// router.get("/", (req: Request, res: Response, next: NextFunction) => {
+//     try {
+//         // Picu eror tiruan
+//         throw new Error("Koneksi database gagal!"); 
+//     } catch (error) {
+//         next(error); // Melempar ke Global Error Handler
+//     }
+// });
+
+router.get("/", (req: Request, res: Response, next: NextFunction) => {
     const { klien } = req.query;
     if (klien) {
         const filteredProjects = projects.filter((pro) => pro.klien === klien);
@@ -35,7 +44,7 @@ router.get("/", (req: Request, res: Response) => {
     res.status(200).json(successResponse(projects, "Data projek berhasil diambil"));
 });
 
-router.get("/:id", (req: Request, res: Response) => {
+router.get("/:id", (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
     const parsedId = parseInt(id as string, 10);
 
@@ -48,7 +57,7 @@ router.get("/:id", (req: Request, res: Response) => {
     res.status(200).json(successResponse(proyekByID, `Data projek dengan id ${id} berhasil diambil`));
 });
 
-router.post("/", (req: Request, res: Response) => {
+router.post("/", (req: Request, res: Response, next: NextFunction) => {
     const { nama, klien, status, tanggalMulai, tanggalSelesai } = req.body;
 
     if(!nama || !klien || !status || !tanggalMulai || !tanggalSelesai){
@@ -57,8 +66,8 @@ router.post("/", (req: Request, res: Response) => {
     }
 
 
-    const isEmailExist = projects.some((pro) => pro.nama === nama);
-    if (isEmailExist){
+    const isNameExist = projects.some((pro) => pro.nama === nama);
+    if (isNameExist){
         res.status(409).json({
             message: "Nama sudah terdaftar"
         });
@@ -79,7 +88,7 @@ router.post("/", (req: Request, res: Response) => {
     res.status(201).json(successResponse(newProject, "Data projek berhasil ditambahkan"));
 });
 
-router.put("/:id", (req: Request, res: Response): void => {
+router.put("/:id", (req: Request, res: Response, next: NextFunction): void => {
     const { id } = req.params;
     const parsedId = parseInt(id as string, 10);
 
@@ -108,7 +117,7 @@ router.put("/:id", (req: Request, res: Response): void => {
     res.status(200).json(successResponse(projects[projectIndex], `Data projek dengan id ${id} berhasil diperbarui`));
 });
 
-router.patch("/:id", (req: Request, res: Response): void => {
+router.patch("/:id", (req: Request, res: Response, next: NextFunction): void => {
     const { id } = req.params;
     const parsedId = parseInt(id as string, 10);
 
@@ -128,7 +137,7 @@ router.patch("/:id", (req: Request, res: Response): void => {
     res.status(200).json(successResponse(projects[projectIndex], `Data proyek dengan id ${id} berhasil diperbarui sebagian (PATCH)`));
 });
 
-router.delete("/:id", (req: Request, res: Response) => {
+router.delete("/:id", (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
     const parsedId = parseInt(id as string, 10);
 
@@ -139,9 +148,9 @@ router.delete("/:id", (req: Request, res: Response) => {
         return;
     }
 
-    projects.splice(projectsIndex, 1)[0];
+    const removedProject = projects.splice(projectsIndex, 1)[0];
 
-    res.status(200).json(successResponse(projects[projectsIndex], `Data proyek dengan id ${id} berhasil dihapus`));
+    res.status(200).json(successResponse(removedProject, `Data proyek dengan id ${id} berhasil dihapus`));
 });
 
 export default router;

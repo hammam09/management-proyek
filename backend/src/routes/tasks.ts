@@ -1,4 +1,4 @@
-import { Router, type Request, type Response, } from 'express';
+import { Router, type Request, type Response, type NextFunction } from 'express';
 import { successResponse, errorResponse } from '../utils/response.ts';
 
 const router = Router();
@@ -10,7 +10,16 @@ let tasks = [
 
 let nextId = 3
 
-router.get("/", (req: Request, res: Response) => {
+// router.get("/", (req: Request, res: Response, next: NextFunction) => {
+//     try {
+//         // Picu eror tiruan
+//         throw new Error("Koneksi database gagal!"); 
+//     } catch (error) {
+//         next(error); // Melempar ke Global Error Handler
+//     }
+// });
+
+router.get("/", (req: Request, res: Response, next: NextFunction) => {
     const { judul } = req.query;
     if (judul) {
         const filteredTasks = tasks.filter((task) => task.judul === judul);
@@ -21,7 +30,7 @@ router.get("/", (req: Request, res: Response) => {
     res.status(200).json(successResponse(tasks, "Data task berhasil diambil"));
 });
 
-router.get("/:id", (req: Request, res: Response) => {
+router.get("/:id", (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
     const parsedId = parseInt(id as string, 10);
 
@@ -34,7 +43,7 @@ router.get("/:id", (req: Request, res: Response) => {
     res.status(200).json(successResponse(tasksByID, `Data task dengan id ${id} berhasil diambil`));
 });
 
-router.post("/", (req: Request, res: Response) => {
+router.post("/", (req: Request, res: Response, next: NextFunction) => {
     const { judul, pic, tenggal, status } = req.body;
 
     if (!judul || !pic || !tenggal || !status) {
@@ -43,11 +52,9 @@ router.post("/", (req: Request, res: Response) => {
     }
 
 
-    const isEmailExist = tasks.some((task) => task.judul === judul);
-    if (isEmailExist) {
-        res.status(409).json({
-            message: "Judul sudah terdaftar"
-        });
+    const isTitleExist = tasks.some((task) => task.judul === judul);
+    if (isTitleExist) {
+        res.status(409).json(errorResponse("Judul sudah terdaftar"));
         return;
     }
 
@@ -64,7 +71,7 @@ router.post("/", (req: Request, res: Response) => {
     res.status(201).json(successResponse(newTask, "Data task berhasil ditambahkan"));
 });
 
-router.put("/:id", (req: Request, res: Response): void => {
+router.put("/:id", (req: Request, res: Response, next: NextFunction): void => {
     const { id } = req.params;
     const parsedId = parseInt(id as string, 10);
 
@@ -92,7 +99,7 @@ router.put("/:id", (req: Request, res: Response): void => {
     res.status(200).json(successResponse(tasks[tasksIndex], `Data task dengan id ${id} berhasil diperbarui`));
 });
 
-router.patch("/:id", (req: Request, res: Response): void => {
+router.patch("/:id", (req: Request, res: Response, next: NextFunction): void => {
     const { id } = req.params;
     const parsedId = parseInt(id as string, 10);
 
@@ -109,10 +116,10 @@ router.patch("/:id", (req: Request, res: Response): void => {
         id: parsedId,
     };
 
-    res.status(200).json(successResponse(tasks[tasksIndex], `Data task dengan id ${id} berhasil diperbarui sebagian (PATCH)`));
+    res.status(200).json(successResponse(tasks[tasksIndex], `Data task dengan id ${id} berhasil diperbarui sebagian.`));
 });
 
-router.delete("/:id", (req: Request, res: Response) => {
+router.delete("/:id", (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
     const parsedId = parseInt(id as string, 10);
 
